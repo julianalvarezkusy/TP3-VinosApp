@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navgraph_list">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navgraph_list"
+    app:startDestination="@id/listFragment2">
 
+    <fragment
+        android:id="@+id/listFragment2"
+        android:name="com.example.vinos_app.fragments.ListFragment"
+        android:label="fragment_list"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment2_to_fragmentLogin2"
+            app:destination="@id/fragmentLogin2" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentLogin2"
+        android:name="com.ort.tp3ejappv1.fragments.FragmentLogin"
+        android:label="FragmentLogin" />
 </navigation>
