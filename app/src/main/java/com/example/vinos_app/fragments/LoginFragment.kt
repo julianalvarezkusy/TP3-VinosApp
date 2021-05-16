@@ -43,9 +43,7 @@ class FragmentLogin : Fragment() {
 
             if (inputUser.text.toString() == this.user && inputPassword.text.toString() == this.password) {
 
-                Snackbar.make(v, "Se a iniciado sesion", Snackbar.LENGTH_SHORT).show()
-
-                //val action = FragmentLoginDirections.actionFragmentLoginToListActivity()
+                //Snackbar.make(v, "Se a iniciado sesion", Snackbar.LENGTH_SHORT).show()
 
                 val action = FragmentLoginDirections.actionFragmentLoginToListFragment()
 
