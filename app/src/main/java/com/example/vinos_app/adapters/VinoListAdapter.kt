@@ -43,10 +43,7 @@ class VinoListAdapter(
             val txt : TextView = view.findViewById(R.id.wineName)
             txt.text = name
         }
-        fun setPrice(price: String){
-            val price : TextView = view.findViewById(R.id.winePrecio)
-            price.text = ""
-        }
+
     }
 
 

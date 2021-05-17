@@ -7,13 +7,12 @@
 
     <fragment
         android:id="@+id/fragmentLogin"
-        android:name="com.ort.tp3ejappv1.fragments.FragmentLogin"
-        android:label="FragmentLogin" >
+        android:name="com.example.vinos_app.fragments.LoginFragment"
+        android:label="LoginFragment" >
         <action
             android:id="@+id/action_fragmentLogin_to_listFragment"
             app:destination="@id/listFragment" />
     </fragment>
-    <include app:graph="@navigation/navgraph_list" />
     <activity
         android:id="@+id/activityList"
         android:name="com.example.vinos_app.activities.ActivityList"

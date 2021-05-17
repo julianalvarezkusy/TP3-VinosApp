@@ -1,4 +1,4 @@
-package com.ort.tp3ejappv1.fragments
+package com.example.vinos_app.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,18 +9,17 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.navigation.findNavController
 import com.example.vinos_app.R
+import com.example.vinos_app.entities.User
 import com.google.android.material.snackbar.Snackbar
 
-
-class FragmentLogin : Fragment() {
+class LoginFragment: Fragment() {
 
     lateinit var v: View
-    lateinit var inputUser: EditText
+
+    lateinit var inputName: EditText
     lateinit var inputPassword: EditText
     lateinit var buttonLogin: Button
-
-    var user : String = "fagen"
-    var password : String = "123"
+    var users : MutableList<User> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,8 +27,7 @@ class FragmentLogin : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_login, container, false)
-
-        inputUser =  v.findViewById(R.id.inputUser)
+        inputName = v.findViewById(R.id.inputUser)
         inputPassword = v.findViewById(R.id.inputPassword)
         buttonLogin = v.findViewById(R.id.buttonLogin)
 
@@ -38,24 +36,31 @@ class FragmentLogin : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        users.add(User("user1", "user1@hotmail.com", "1"))
+        users.add(User("user2", "user2@hotmail.com", "2"))
+        users.add(User("user3", "user3@hotmail.com", "3"))
+
+        fun validUser(name: String, password: String): Boolean {
+            val user = this.users.find { u -> u.name == name && u.password == password }
+            return user != null
+        }
 
         buttonLogin.setOnClickListener {
 
-            if (inputUser.text.toString() == this.user && inputPassword.text.toString() == this.password) {
+            if (validUser(inputName.text.toString(), inputPassword.text.toString())) {
 
                 //Snackbar.make(v, "Se a iniciado sesion", Snackbar.LENGTH_SHORT).show()
 
-                val action = FragmentLoginDirections.actionFragmentLoginToListFragment()
+                val action = LoginFragmentDirections.actionFragmentLoginToListFragment()
 
-
-
-               v.findNavController().navigate(action)
+                v.findNavController().navigate(action)
 
             } else {
-                Snackbar.make(v, "Error al ingresar ususario o contraseña", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(v, "Error al ingresar ususario o contraseña", Snackbar.LENGTH_SHORT)
+                    .show()
             }
 
         }
-    }
 
+    }
 }
