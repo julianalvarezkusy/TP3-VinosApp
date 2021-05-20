@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.entities.Vino
 
 class VinoListAdapter(
-        private var vinosList : MutableList<Vino>
+        private var vinosList : MutableList<Vino>,
+        val onItemClick: (String) -> Boolean
 
         ): RecyclerView.Adapter<VinoListAdapter.VinoHolder>() {
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VinoHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.wine_list_item, parent,false)
@@ -22,15 +22,17 @@ class VinoListAdapter(
 
     override fun onBindViewHolder(holder: VinoHolder, position: Int) {
         holder.setName(vinosList[position].nombreVino)
+
+        holder.getCardLayout().setOnClickListener() {
+            onItemClick(vinosList[position].nombreVino)
+        }
     }
+
+
 
     override fun getItemCount(): Int {
         return vinosList.size
     }
-
-
-
-
 
     class VinoHolder(v:View): RecyclerView.ViewHolder(v){
         private var view:View
@@ -42,6 +44,10 @@ class VinoListAdapter(
         fun setName(name: String){
             val txt : TextView = view.findViewById(R.id.wineName)
             txt.text = name
+        }
+
+        fun getCardLayout (): CardView {
+            return view.findViewById(R.id.cardView)
         }
 
     }

@@ -5,29 +5,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.adapters.VinoListAdapter
 import com.example.vinos_app.entities.Vino
+import com.example.vinos_app.viewModel.WineViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class ListFragment : Fragment() {
 
     lateinit var v:View
 
-
-
-    var vinos : MutableList<Vino> = ArrayList()
-
     lateinit var recVinos: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var vinoListAdapter : VinoListAdapter
 
+    private lateinit var viewModel: WineViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
     }
 
@@ -39,24 +39,31 @@ class ListFragment : Fragment() {
         v = inflater.inflate(R.layout.fragment_list, container, false)
         recVinos = v.findViewById(R.id.recViewList)
 
+        viewModel = ViewModelProvider(requireActivity()).get(WineViewModel::class.java)
+
         return v
     }
 
     override fun onStart() {
         super.onStart()
-
-        vinos.add(Vino("Estrella 1977", 1500.00, 4.8, "Weinert"))
-        vinos.add(Vino("La Violeta 2012", 2000.00, 4.8, "Monteviejo"))
-        vinos.add(Vino("Nosotros 2010", 1300.00, 4.7, "Susana Balbo"))
-        vinos.add(Vino("Chañares", 2005.00, 4.7, "Mendoza"))
+        viewModel.cargarDatos()
 
         recVinos.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context)
         recVinos.layoutManager = linearLayoutManager
 
-        vinoListAdapter = VinoListAdapter(vinos)
+        vinoListAdapter = VinoListAdapter(viewModel.vinos) { x ->
+            onItemClick(x)
+        }
 
         recVinos.adapter = vinoListAdapter
     }
 
+    fun onItemClick (nombreVino:String ) : Boolean {
+
+        var action = ListFragmentDirections.actionListFragment2ToDetallesFragment(nombreVino)
+        v.findNavController().navigate(action)
+
+        return true
+    }
 }

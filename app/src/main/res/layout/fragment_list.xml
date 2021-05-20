@@ -9,8 +9,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recViewList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="65dp"
-        tools:layout_editor_absoluteY="218dp" />
+        android:layout_width="407dp"
+        android:layout_height="733dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

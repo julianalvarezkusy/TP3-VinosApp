@@ -11,11 +11,16 @@
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action
-            android:id="@+id/action_listFragment2_to_fragmentLogin2"
-            app:destination="@id/fragmentLogin2" />
+            android:id="@+id/action_listFragment2_to_detallesFragment"
+            app:destination="@id/DetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentLogin2"
-        android:name="com.ort.tp3ejappv1.fragments.FragmentLogin"
-        android:label="FragmentLogin" />
+        android:id="@+id/DetailsFragment"
+        android:name="com.example.vinos_app.fragments.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="wineName"
+            app:argType="string" />
+    </fragment>
 </navigation>
