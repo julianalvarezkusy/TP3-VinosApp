@@ -19,6 +19,7 @@ class LoginFragment: Fragment() {
     lateinit var inputName: EditText
     lateinit var inputPassword: EditText
     lateinit var buttonLogin: Button
+    lateinit var buttonCreateUser : Button
     var users : MutableList<User> = ArrayList()
 
     override fun onCreateView(
@@ -30,6 +31,7 @@ class LoginFragment: Fragment() {
         inputName = v.findViewById(R.id.inputUser)
         inputPassword = v.findViewById(R.id.inputPassword)
         buttonLogin = v.findViewById(R.id.buttonLogin)
+        buttonCreateUser = v.findViewById(R.id.buttonCreateUser)
 
         return v
     }
@@ -51,7 +53,9 @@ class LoginFragment: Fragment() {
 
                 //Snackbar.make(v, "Se a iniciado sesion", Snackbar.LENGTH_SHORT).show()
 
-                val action = LoginFragmentDirections.actionFragmentLoginToListFragment()
+
+                //val action = LoginFragmentDirections.actionFragmentLoginToListFragment()
+                val action = LoginFragmentDirections.actionFragmentLoginToActivityList()
 
                 v.findNavController().navigate(action)
 
@@ -60,6 +64,13 @@ class LoginFragment: Fragment() {
                     .show()
             }
 
+        }
+
+        buttonCreateUser.setOnClickListener(){
+
+            val action = LoginFragmentDirections.actionFragmentLoginToCreateUserFragment()
+
+            v.findNavController().navigate(action)
         }
 
     }

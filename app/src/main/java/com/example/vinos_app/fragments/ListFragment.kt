@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.adapters.VinoListAdapter
-import com.example.vinos_app.entities.Vino
 import com.example.vinos_app.viewModel.WineViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -59,10 +59,19 @@ class ListFragment : Fragment() {
         recVinos.adapter = vinoListAdapter
     }
 
-    fun onItemClick (nombreVino:String ) : Boolean {
+    fun onItemClick (position:Int ) : Boolean {
 
-        var action = ListFragmentDirections.actionListFragment2ToDetallesFragment(nombreVino)
-        v.findNavController().navigate(action)
+
+        var action: NavDirections  = ListFragmentDirections.actionListFragmentToDetailsFragment(position)
+
+        var navController = v.findNavController()
+        if (navController.currentDestination?.id == R.id.listFragment) {
+            navController.navigate(action)
+        }else{
+            Snackbar.make(v, "Error" + navController.currentDestination?.label.toString(), Snackbar.LENGTH_SHORT)
+                    .show()
+        }
+
 
         return true
     }

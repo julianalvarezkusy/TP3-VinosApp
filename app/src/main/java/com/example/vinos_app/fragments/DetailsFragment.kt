@@ -1,18 +1,21 @@
 package com.example.vinos_app.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.vinos_app.R
+import com.example.vinos_app.viewModel.WineViewModel
 
 class DetailsFragment : Fragment() {
 
     lateinit var v: View
 
-    lateinit var wineName: TextView 
+    lateinit var wineName: TextView
     lateinit var wineCellar: TextView
     lateinit var wineRating: TextView
 
@@ -46,12 +49,24 @@ class DetailsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        var datoNavigation = FragmentDetalleListArgs.fromBundle(requireArguments())
-        var wineObj = viewModel.buscarVino(datoNavigation.wineName)
+        //var datoNavigation = FragmentDetalleListArgs.fromBundle(requireArguments())
+        var args = DetailsFragmentArgs.fromBundle(requireArguments())
 
-        wineName = "Nombre: " + wineObj.nombre
-        wineCellar = "Cellar: " + wineObj.bodega
-        wineRating = "Rating: " + wineObj.ratingVino
+
+        //var wineObj = viewModel.buscarVino(datoNavigation.wineName)
+        var wineObj = viewModel.vinos[args.wineName]
+
+        if(wineObj != null){
+            Log.d("Vino encontrado",wineObj.toString())
+            Log.d("ID VINO", args.wineName.toString())
+        }
+
+        wineName.text = "Nombre: " + wineObj.nombreVino
+        wineCellar.text = "Cellar: " + wineObj.bodegaVino
+        wineRating.text = "Rating: " + wineObj.ratingVino
+
+
+
     }
 
 }

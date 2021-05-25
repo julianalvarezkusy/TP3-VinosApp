@@ -1,5 +1,7 @@
 package com.example.vinos_app.entities
 
+import android.os.Parcelable
+
 class Vino (nombreVino : String, precioVino: Double, ratingVino: Double, bodegaVino: String){
 
     var nombreVino: String = ""

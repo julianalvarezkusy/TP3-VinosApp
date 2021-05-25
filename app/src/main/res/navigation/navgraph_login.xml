@@ -10,17 +10,20 @@
         android:name="com.example.vinos_app.fragments.LoginFragment"
         android:label="LoginFragment" >
         <action
-            android:id="@+id/action_fragmentLogin_to_listFragment"
-            app:destination="@id/listFragment" />
+            android:id="@+id/action_fragmentLogin_to_createUserFragment"
+            app:destination="@id/createUserFragment" />
+        <action
+            android:id="@+id/action_fragmentLogin_to_activityList"
+            app:destination="@id/activityList" />
     </fragment>
+    <fragment
+        android:id="@+id/createUserFragment"
+        android:name="com.example.vinos_app.fragments.CreateUserFragment"
+        android:label="fragment_create_user"
+        tools:layout="@layout/fragment_create_user" />
     <activity
         android:id="@+id/activityList"
         android:name="com.example.vinos_app.activities.ActivityList"
         android:label="activity_list"
         tools:layout="@layout/activity_list" />
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="com.example.vinos_app.fragments.ListFragment"
-        android:label="fragment_list"
-        tools:layout="@layout/fragment_list" />
 </navigation>

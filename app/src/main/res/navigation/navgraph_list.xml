@@ -3,16 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navgraph_list"
-    app:startDestination="@id/listFragment2">
+    app:startDestination="@id/listFragment">
 
     <fragment
-        android:id="@+id/listFragment2"
+        android:id="@+id/listFragment"
         android:name="com.example.vinos_app.fragments.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" >
+        tools:layout="@layout/fragment_list">
         <action
-            android:id="@+id/action_listFragment2_to_detallesFragment"
-            app:destination="@id/DetailsFragment" />
+            android:id="@+id/action_listFragment_to_DetailsFragment"
+            app:destination="@id/DetailsFragment" >
+            <argument
+                android:name="wineName"
+                android:defaultValue="0" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/DetailsFragment"
@@ -21,6 +25,7 @@
         tools:layout="@layout/fragment_details">
         <argument
             android:name="wineName"
-            app:argType="string" />
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

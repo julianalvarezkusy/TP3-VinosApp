@@ -11,7 +11,7 @@ import com.example.vinos_app.entities.Vino
 
 class VinoListAdapter(
         private var vinosList : MutableList<Vino>,
-        val onItemClick: (String) -> Boolean
+        val onItemClick: (Int) -> Boolean
 
         ): RecyclerView.Adapter<VinoListAdapter.VinoHolder>() {
 
@@ -24,7 +24,8 @@ class VinoListAdapter(
         holder.setName(vinosList[position].nombreVino)
 
         holder.getCardLayout().setOnClickListener() {
-            onItemClick(vinosList[position].nombreVino)
+            //onItemClick(vinosList[position].nombreVino)
+            onItemClick(position)
         }
     }
 
