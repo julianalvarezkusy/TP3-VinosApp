@@ -22,6 +22,13 @@ class VinoListAdapter(
 
     override fun onBindViewHolder(holder: VinoHolder, position: Int) {
         holder.setName(vinosList[position].nombreVino)
+        holder.setCellar(vinosList[position].bodegaVino)
+        holder.setPrice(vinosList[position].precioVino.toString())
+        holder.setRating(vinosList[position].ratingVino.toString())
+
+
+
+
 
         holder.getCardLayout().setOnClickListener() {
             //onItemClick(vinosList[position].nombreVino)
@@ -45,6 +52,21 @@ class VinoListAdapter(
         fun setName(name: String){
             val txt : TextView = view.findViewById(R.id.wineName)
             txt.text = name
+        }
+
+        fun setCellar(name: String){
+            val txt : TextView = view.findViewById(R.id.wineBodega)
+            txt.text = name
+        }
+
+        fun setPrice(name: String){
+            val txt: TextView = view.findViewById(R.id.winePrecio)
+            txt.text = "$ " + name
+        }
+
+        fun setRating (name: String){
+            val txt : TextView = view.findViewById(R.id.wineRating)
+            txt.text = name + "/5.0"
         }
 
         fun getCardLayout (): CardView {

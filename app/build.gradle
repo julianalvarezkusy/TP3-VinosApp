@@ -47,7 +47,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 }
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
