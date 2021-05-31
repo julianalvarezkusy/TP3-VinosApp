@@ -14,7 +14,6 @@ import com.example.vinos_app.R
 import com.example.vinos_app.adapters.VinoListAdapter
 import com.example.vinos_app.viewModel.WineViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.ktx.Firebase
 
 
 class ListFragment : Fragment() {
@@ -48,8 +47,8 @@ class ListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-
-        viewModel.cargarDatos()
+       //viewModel.cargarDatos()
+        viewModel.getListWines()
 
         recVinos.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context)
