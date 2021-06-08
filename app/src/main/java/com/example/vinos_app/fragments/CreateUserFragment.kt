@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.vinos_app.R
 import com.example.vinos_app.viewModel.CreateUserViewModel
-import com.example.vinos_app.viewModel.WineViewModel
 import com.google.android.material.snackbar.Snackbar
 
 

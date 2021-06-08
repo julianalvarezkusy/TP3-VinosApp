@@ -1,10 +1,13 @@
 package com.example.vinos_app.fragments
 
+import WineViewModel
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
@@ -12,8 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.adapters.VinoListAdapter
-import com.example.vinos_app.viewModel.WineViewModel
+import com.example.vinos_app.entities.Vino
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 
 
 class ListFragment : Fragment() {
@@ -47,18 +51,28 @@ class ListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-       //viewModel.cargarDatos()
-        viewModel.getListWines()
+
+
+        //Implementar corrutina y el observer
+
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+
+        scope.launch {
+            //viewModel.cargarDatos()
+            viewModel.getListWines()
+        }
+
 
         recVinos.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context)
         recVinos.layoutManager = linearLayoutManager
 
-        vinoListAdapter = VinoListAdapter(viewModel.vinos) { x ->
-            onItemClick(x)
-        }
+        viewModel.vinosLiveData.observe(viewLifecycleOwner, Observer { result ->
+            vinoListAdapter = VinoListAdapter(result) { x -> onItemClick(x) }
+            recVinos.adapter = vinoListAdapter
+        })
 
-        recVinos.adapter = vinoListAdapter
     }
 
     fun onItemClick (position:Int ) : Boolean {

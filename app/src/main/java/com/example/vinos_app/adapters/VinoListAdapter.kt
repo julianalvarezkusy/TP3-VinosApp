@@ -21,14 +21,10 @@ class VinoListAdapter(
     }
 
     override fun onBindViewHolder(holder: VinoHolder, position: Int) {
-        holder.setName(vinosList[position].nombreVino)
-        holder.setCellar(vinosList[position].bodegaVino)
-        holder.setPrice(vinosList[position].precioVino.toString())
-        holder.setRating(vinosList[position].ratingVino.toString())
-
-
-
-
+        holder.setName(vinosList[position].nombre)
+        holder.setCellar(vinosList[position].bodega)
+        holder.setPrice(vinosList[position].precio.toString())
+        holder.setRating(vinosList[position].rating.toString())
 
         holder.getCardLayout().setOnClickListener() {
             //onItemClick(vinosList[position].nombreVino)

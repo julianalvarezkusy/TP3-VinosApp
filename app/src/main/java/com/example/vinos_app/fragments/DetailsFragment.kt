@@ -1,5 +1,6 @@
 package com.example.vinos_app.fragments
 
+import WineViewModel
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,11 +10,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.vinos_app.R
-import com.example.vinos_app.viewModel.WineViewModel
 
 class DetailsFragment : Fragment() {
 
     lateinit var v: View
+
 
     lateinit var wineName: TextView
     lateinit var wineCellar: TextView
@@ -52,18 +53,17 @@ class DetailsFragment : Fragment() {
         //var datoNavigation = FragmentDetalleListArgs.fromBundle(requireArguments())
         var args = DetailsFragmentArgs.fromBundle(requireArguments())
 
-
         //var wineObj = viewModel.buscarVino(datoNavigation.wineName)
-        var wineObj = viewModel.vinos[args.wineName]
+        var wineObj = viewModel.vinosLiveData.value!![args.wineName]
 
         if(wineObj != null){
             Log.d("Vino encontrado",wineObj.toString())
             Log.d("ID VINO", args.wineName.toString())
         }
 
-        wineName.text = "Nombre: " + wineObj.nombreVino
-        wineCellar.text = "Cellar: " + wineObj.bodegaVino
-        wineRating.text = "Rating: " + wineObj.ratingVino
+        wineName.text = "Nombre: " + wineObj.nombre
+        wineCellar.text = "Cellar: " + wineObj.bodega
+        wineRating.text = "Rating: " + wineObj.rating
 
 
 

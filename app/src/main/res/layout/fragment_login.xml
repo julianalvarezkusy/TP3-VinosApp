@@ -40,6 +40,7 @@
         android:text="Iniciar sesion"
         app:layout_constraintBottom_toTopOf="@+id/buttonCreateUser"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
 
@@ -48,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Crear Cuenta"
+        android:textColorHighlight="#F44336"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -56,8 +58,8 @@
 
     <ImageView
         android:id="@+id/n_verde"
-        android:layout_width="157dp"
-        android:layout_height="137dp"
+        android:layout_width="124dp"
+        android:layout_height="144dp"
         android:src="@drawable/wine_bottle"
         app:layout_constraintBottom_toTopOf="@+id/inputUser"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,19 +1,18 @@
 package com.example.vinos_app.entities
 
+import android.os.Parcel
 import android.os.Parcelable
 
-class Vino (nombreVino : String, precioVino: Double, ratingVino: Double, bodegaVino: String){
+class Vino(var nombre: String, var precio: Double, var rating: Double, var bodega: String) {
 
-    var nombreVino: String = ""
-    var precioVino: Double=0.0
-    var ratingVino: Double = 0.0
-    var bodegaVino: String = ""
+    constructor() : this("",0.0,0.0,"")
 
-    init{
-        this.nombreVino = nombreVino
-        this.precioVino = precioVino
-        this.ratingVino = ratingVino
-        this.bodegaVino = bodegaVino
-    }
+//    init{
+//        this.nombre = nombre!!
+//        this.precio = precio!!
+//        this.rating = rating!!
+//        this.bodega = bodega!!
+//    }
+
 
 }
