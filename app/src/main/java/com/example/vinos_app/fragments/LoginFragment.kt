@@ -1,16 +1,20 @@
 package com.example.vinos_app.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.vinos_app.R
 import com.example.vinos_app.entities.User
+import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 
 class LoginFragment: Fragment() {
 
@@ -42,27 +46,32 @@ class LoginFragment: Fragment() {
         users.add(User("user2", "user2@hotmail.com", "2"))
         users.add(User("user3", "user3@hotmail.com", "3"))
 
-        fun validUser(name: String, password: String): Boolean {
-            val user = this.users.find { u -> u.name == name && u.password == password }
-            return user != null
-        }
+        lateinit var createUserViewModel: CreateUserViewModel
+
+        createUserViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
+
 
         buttonLogin.setOnClickListener {
 
-            if (validUser(inputName.text.toString(), inputPassword.text.toString())) {
+            val parentJob = Job()
+            val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
-                //Snackbar.make(v, "Se a iniciado sesion", Snackbar.LENGTH_SHORT).show()
+            scope.launch {
+                val getUser = async{createUserViewModel.getUser(inputName.text.toString(), inputPassword.text.toString())}
+                if (getUser.await()) {
 
 
-                //val action = LoginFragmentDirections.actionFragmentLoginToListFragment()
-                val action = LoginFragmentDirections.actionFragmentLoginToActivityList()
+                    val action = LoginFragmentDirections.actionFragmentLoginToActivityList()
 
-                v.findNavController().navigate(action)
+                    v.findNavController().navigate(action)
 
-            } else {
-                Snackbar.make(v, "Error al ingresar ususario o contraseña", Snackbar.LENGTH_SHORT)
-                    .show()
+                } else {
+                    Snackbar.make(v, "Error al ingresar ususario o contraseña", Snackbar.LENGTH_SHORT)
+                        .show()
+                }
             }
+
+
 
         }
 

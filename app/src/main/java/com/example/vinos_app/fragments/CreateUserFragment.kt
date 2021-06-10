@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.vinos_app.R
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -47,6 +48,11 @@ class CreateUserFragment : Fragment() {
         buttonCreateUser.setOnClickListener(){
 
             createUserViewModel.addUser(userName.text.toString(), userEmail.text.toString(), userPassword.text.toString())
+
+            val action = CreateUserFragmentDirections.actionCreateUserFragmentToFragmentLogin()
+
+            v.findNavController().navigate(action)
+
             Snackbar.make(v, "Usuario: " + userEmail.text + " "+ userName.text + " Password: "+userPassword.text, Snackbar.LENGTH_SHORT)
                 .show()
         }

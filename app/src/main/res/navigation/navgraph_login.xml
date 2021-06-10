@@ -20,7 +20,11 @@
         android:id="@+id/createUserFragment"
         android:name="com.example.vinos_app.fragments.CreateUserFragment"
         android:label="fragment_create_user"
-        tools:layout="@layout/fragment_create_user" />
+        tools:layout="@layout/fragment_create_user" >
+        <action
+            android:id="@+id/action_createUserFragment_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+    </fragment>
     <activity
         android:id="@+id/activityList"
         android:name="com.example.vinos_app.activities.ActivityList"
