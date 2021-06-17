@@ -3,20 +3,12 @@ package com.example.vinos_app.entities
 class User(
         val name: String? = "",
         val email: String? = "",
-        val password: String? = "") {
+        val password: String? = "",
+        val userWineList: MutableList<Vino>) {
 
-    //var name: String? = ""
-    //var email: String? =""
-    //var password: String? =""
-
+        constructor() : this("", "", "", ArrayList())
 
 
-    /* init{
-        this.name = name
-        this.email = email
-        this.password = password
-    }*/
-
-    override fun toString()= "$name $email $password"
+    override fun toString()= "$name $email $password ${userWineList.size}"
 
 }

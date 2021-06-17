@@ -2,13 +2,13 @@ package com.example.vinos_app.viewModel
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.example.vinos_app.activities.LoginActivity
 import com.example.vinos_app.entities.User
+import com.example.vinos_app.entities.Vino
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
@@ -22,7 +22,10 @@ class CreateUserViewModel : ViewModel(){
 
 
     fun addUser(nombre : String, email: String, password: String) {
-        var miUser = User(nombre, email, password)
+
+        var userWineList: MutableList<Vino> = mutableListOf()
+
+        var miUser = User(nombre, email, password, userWineList)
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener { task ->
@@ -43,8 +46,15 @@ class CreateUserViewModel : ViewModel(){
             }
     }
 
+    fun addUser(user: User){
+        db.collection(userColection).document(user.email.toString())
+                .set(user)
+                .addOnSuccessListener { Log.d(TAG,"Usuario Actualizado correctamente") }
+                .addOnFailureListener{e -> Log.w(TAG, "Error al guardar user")}
+    }
+
         suspend fun  getUser(email: String, password: String): Boolean {
-            var userValidated: Boolean = false
+
 
             try {
 
@@ -53,22 +63,7 @@ class CreateUserViewModel : ViewModel(){
                 return result.user != null
                 Log.d(TAG, "signInWithEmail:success")
 
-                /*.addOnCompleteListener(){ task ->
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success")
-                            val user = auth.currentUser
-                            if(user != null)
-                                userValidated = true
-                            //updateUI(user)
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        }
-
-
-                }*/
             } catch (e: Exception) {
                 Log.e("FirebaseUserSource", "Exception thrown: ${e.message}")
 
@@ -77,5 +72,35 @@ class CreateUserViewModel : ViewModel(){
 
 
         }
+
+    suspend fun getUserByEmail(email: String) : User? {
+
+        try{
+            val userRef = db.collection(userColection).whereEqualTo("email", email)
+                    .get().await()
+
+
+            val userList = userRef.documents
+
+            if (userList.size == 1){
+                Log.d("INSIDE",userList.toString())
+                return userList[0].toObject(User::class.java)
+            }else{
+                return null
+            }
+            Log.d("FirebaseUserSource", "User found")
+
+
+
+
+
+
+
+        }catch (e: Exception){
+
+            Log.e("User not found", "Exception thrown: ${e.message}")
+            return null
+        }
+    }
 
 }
