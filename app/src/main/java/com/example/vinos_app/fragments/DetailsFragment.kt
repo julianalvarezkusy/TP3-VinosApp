@@ -3,13 +3,12 @@ package com.example.vinos_app.fragments
 import WineViewModel
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.vinos_app.R
+import com.google.android.material.snackbar.Snackbar
 
 class DetailsFragment : Fragment() {
 
@@ -64,9 +63,22 @@ class DetailsFragment : Fragment() {
         wineName.text = "Nombre: " + wineObj.nombre
         wineCellar.text = "Cellar: " + wineObj.bodega
         wineRating.text = "Rating: " + wineObj.rating
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.details_wine_toolbar, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
+        val id = when(item.itemId) {
+
+            R.id.app_bar_switch -> Snackbar.make(v, "bar_switch", Snackbar.LENGTH_SHORT).show()
+
+            else -> ""
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
