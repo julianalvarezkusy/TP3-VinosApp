@@ -42,9 +42,9 @@ class LoginFragment: Fragment() {
 
     override fun onStart() {
         super.onStart()
-        users.add(User("user1", "user1@hotmail.com", "1"))
-        users.add(User("user2", "user2@hotmail.com", "2"))
-        users.add(User("user3", "user3@hotmail.com", "3"))
+        //users.add(User("user1", "user1@hotmail.com", "1"))
+        //users.add(User("user2", "user2@hotmail.com", "2"))
+        //users.add(User("user3", "user3@hotmail.com", "3"))
 
         lateinit var createUserViewModel: CreateUserViewModel
 
