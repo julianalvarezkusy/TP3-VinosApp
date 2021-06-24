@@ -1,7 +1,9 @@
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.vinos_app.entities.User
 import com.example.vinos_app.entities.Vino
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -36,6 +38,19 @@ class WineViewModel : ViewModel() {
             .set(wine)
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+    }
+
+    fun addWine (user: User, wine: Vino){
+        user.userWineList.add(wine)
+        user.email?.let {
+            db.collection("users").document(it)
+                .set(user)
+                .addOnSuccessListener {
+                    Log.d(TAG, "DocumentSnapshot successfully written!")
+
+                }
+                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+        }
     }
 
    fun getListWines(){

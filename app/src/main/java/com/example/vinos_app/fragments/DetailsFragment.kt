@@ -7,9 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.vinos_app.R
+import com.example.vinos_app.viewModel.CreateUserViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
+import java.lang.Exception
 
 class DetailsFragment : Fragment() {
 
@@ -19,8 +25,10 @@ class DetailsFragment : Fragment() {
     lateinit var wineName: TextView
     lateinit var wineCellar: TextView
     lateinit var wineRating: TextView
+    lateinit var wineFavourite: Button
 
     private lateinit var viewModel: WineViewModel
+    private lateinit var userViewModel : CreateUserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +44,7 @@ class DetailsFragment : Fragment() {
         wineName = v.findViewById(R.id.wineNameDetail)
         wineCellar = v.findViewById(R.id.wineCellarDetail)
         wineRating = v.findViewById(R.id.wineRatingDetail)
+        wineFavourite = v.findViewById(R.id.favoriteButton)
 
         return v
     }
@@ -43,6 +52,7 @@ class DetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(WineViewModel::class.java)
+        userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
         // TODO: Use the ViewModel
 
     }
@@ -65,8 +75,46 @@ class DetailsFragment : Fragment() {
         wineCellar.text = "Cellar: " + wineObj.bodega
         wineRating.text = "Rating: " + wineObj.rating
 
+        wineFavourite.setOnClickListener {
+
+            val parentJob = Job()
+            val scope = CoroutineScope(Dispatchers.Default + parentJob)
+
+            scope.launch {
+                try{
+                    val userConected = userViewModel.getUserConected()
+                    if(userConected!= null){
+                        val getUserbyEmail = async { userConected.email?.let { it1 -> userViewModel.getUserByEmail(it1) } }
+                        val user = getUserbyEmail.await()
+                        if(user != null){
+                            viewModel.addWine(user , wineObj)
+                            Snackbar.make(v, "Vino agregado correctamente", Snackbar.LENGTH_SHORT)
+                                    .show()
+                        }else{
+                            Log.d("Error", "No se encontró el usuario")
+                        }
+                    }
+
+
+                }catch (e : Exception){
+                    Log.d("","ERROR: "+ e.message)
+                }
+
+
+
+
+
+            }
+
+
+
+
+        }
+
 
 
     }
+
+
 
 }
