@@ -6,10 +6,13 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 <<<<<<< HEAD
+<<<<<<< HEAD
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+=======
+>>>>>>> 4dcf3670023c8d16888333765fb6a82ee4f40183
 =======
 >>>>>>> 4dcf3670023c8d16888333765fb6a82ee4f40183
 import android.widget.TextView
@@ -17,10 +20,14 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.vinos_app.R
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import java.lang.Exception
+=======
+import com.google.android.material.snackbar.Snackbar
+>>>>>>> 4dcf3670023c8d16888333765fb6a82ee4f40183
 =======
 import com.google.android.material.snackbar.Snackbar
 >>>>>>> 4dcf3670023c8d16888333765fb6a82ee4f40183
@@ -88,6 +95,7 @@ class DetailsFragment : Fragment() {
         inflater.inflate(R.menu.details_wine_toolbar, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
         wineFavourite.setOnClickListener {
@@ -117,8 +125,12 @@ class DetailsFragment : Fragment() {
 
 
 
+=======
+>>>>>>> 4dcf3670023c8d16888333765fb6a82ee4f40183
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
+<<<<<<< HEAD
             }
 
 
@@ -132,6 +144,10 @@ class DetailsFragment : Fragment() {
 
         val id = when(item.itemId) {
 
+=======
+        val id = when(item.itemId) {
+
+>>>>>>> 4dcf3670023c8d16888333765fb6a82ee4f40183
             R.id.app_bar_switch -> Snackbar.make(v, "bar_switch", Snackbar.LENGTH_SHORT).show()
 
             else -> ""
