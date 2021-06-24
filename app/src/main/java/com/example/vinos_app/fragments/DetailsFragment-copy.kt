@@ -25,7 +25,7 @@ import java.lang.Exception
 import com.google.android.material.snackbar.Snackbar
 >>>>>>> 4dcf3670023c8d16888333765fb6a82ee4f40183
 
-class DetailsFragment : Fragment() {
+class `DetailsFragment-copy` : Fragment() {
 
     lateinit var v: View
 
