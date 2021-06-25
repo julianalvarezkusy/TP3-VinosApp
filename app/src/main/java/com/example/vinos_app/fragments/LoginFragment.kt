@@ -44,7 +44,11 @@ class LoginFragment: Fragment() {
         super.onStart()
         //users.add(User("user1", "user1@hotmail.com", "1"))
         //users.add(User("user2", "user2@hotmail.com", "2"))
+<<<<<<< HEAD
         //users.add(User("user3", "user3@hotmail.com", "3"))
+=======
+       // users.add(User("user3", "user3@hotmail.com", "3"))
+>>>>>>> da1a4ec3e55e975cf1dd668a9bf3da4235f8fe50
 
         lateinit var createUserViewModel: CreateUserViewModel
 

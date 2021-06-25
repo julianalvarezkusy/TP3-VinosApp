@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.vinos_app.entities.User
 import com.example.vinos_app.entities.Vino
+import com.google.common.collect.Collections2.filter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -18,17 +19,21 @@ class WineViewModel : ViewModel() {
     val db = Firebase.firestore
 
     fun cargarDatos(){
+
+/*
+
         vinos.add(Vino("Estrella 1977", 1500.00, 3.8, "Weinert"))
         vinos.add(Vino("La Violeta 2012", 2000.00, 4.8, "Monteviejo"))
         vinos.add(Vino("Nosotros 2010", 1300.00, 3.2, "Susana Balbo"))
         vinos.add(Vino("Chañares", 2005.00, 4.5, "Mendoza"))
-        //vinosLD.value = vinos
 
-/*       for (vino in vinos) {
+        vinosLD.value = vinos
+        for (vino in vinos) {
             addWine(vino)
             Log.d(TAG,vino.nombre)
         }
-        */
+
+*/
 
     }
 
@@ -74,6 +79,11 @@ class WineViewModel : ViewModel() {
 
     fun buscarVino(name:String): Vino? {
         return this.vinos.find { v -> v.nombre == name}
+    }
+
+    fun filtroVinos(busquedaString: String) {
+        this.vinos.filter { vino:Vino -> "${vino.nombre} => ${vino.bodega}".contains(busquedaString,true) }
+        vinosLiveData.value = vinos
     }
 
 }

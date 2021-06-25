@@ -8,16 +8,36 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.entities.Vino
+import kotlin.properties.Delegates
 
 class VinoListAdapter(
-        private var vinosList : MutableList<Vino>,
-        val onItemClick: (Int) -> Boolean
-
-        ): RecyclerView.Adapter<VinoListAdapter.VinoHolder>() {
+    val onItemClick: (Int) -> Boolean
+    ): RecyclerView.Adapter<VinoListAdapter.VinoHolder>() {
+    var vinosList: List<Vino> by Delegates.observable(emptyList()){ _, _, _ -> notifyDataSetChanged() }
+    lateinit var vinosListBackup:MutableList<Vino>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VinoHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.wine_list_item, parent,false)
         return (VinoHolder(view))
+    }
+
+    fun setData(data: List<Vino>){
+        this.vinosList = data
+        this.vinosListBackup = data as MutableList<Vino>
+    }
+
+    fun filter(text: String) {
+        var filteredList = mutableListOf<Vino>()
+        if(text.isEmpty()) {
+            filteredList = vinosListBackup
+        } else {
+            vinosListBackup.forEach {
+                var vino = it.nombre.toLowerCase() + it.bodega.toLowerCase()
+                if(vino.contains(text.toLowerCase()))
+                    filteredList.add(it)
+            }
+        }
+        vinosList = filteredList
     }
 
     override fun onBindViewHolder(holder: VinoHolder, position: Int) {
@@ -30,9 +50,8 @@ class VinoListAdapter(
             //onItemClick(vinosList[position].nombreVino)
             onItemClick(position)
         }
+
     }
-
-
 
     override fun getItemCount(): Int {
         return vinosList.size
@@ -70,12 +89,5 @@ class VinoListAdapter(
         }
 
     }
-
-
-
-
-
-
-
 
 }
