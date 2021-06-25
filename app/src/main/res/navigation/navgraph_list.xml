@@ -27,5 +27,8 @@
             android:name="wineName"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_DetailsFragment_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
 </navigation>

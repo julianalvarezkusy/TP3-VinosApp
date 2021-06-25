@@ -9,8 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.vinos_app.R
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -29,6 +31,7 @@ class DetailsFragment : Fragment() {
     lateinit var wineCellar: TextView
     lateinit var wineRating: TextView
     lateinit var wineFavourite: Button
+    lateinit var backArrow : ImageButton
 
     private lateinit var viewModel: WineViewModel
     private lateinit var userViewModel : CreateUserViewModel
@@ -48,6 +51,7 @@ class DetailsFragment : Fragment() {
         wineCellar = v.findViewById(R.id.wineCellarDetail)
         wineRating = v.findViewById(R.id.wineRatingDetail)
         wineFavourite = v.findViewById(R.id.favoriteButton)
+        backArrow = v.findViewById(R.id.backarrow)
 
         return v
     }
@@ -106,6 +110,18 @@ class DetailsFragment : Fragment() {
                 }
             }
         }
+
+        backArrow.setOnClickListener(){
+            goBack()
+        }
+    }
+
+    private fun goBack() {
+
+        val action = DetailsFragmentDirections.actionDetailsFragmentToListFragment()
+
+        v.findNavController().navigate(action)
+        
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
