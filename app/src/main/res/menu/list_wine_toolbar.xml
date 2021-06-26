@@ -8,4 +8,9 @@
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/item_options_user"
+        android:icon="@drawable/ic_user_black"
+        android:title="Options User"
+        app:showAsAction="always" />
 </menu>

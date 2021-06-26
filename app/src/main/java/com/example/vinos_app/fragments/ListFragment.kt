@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.adapters.VinoListAdapter
+import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 
@@ -24,21 +25,25 @@ class ListFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var vinoListAdapter: VinoListAdapter
 
-    private lateinit var viewModel: WineViewModel
+    private lateinit var wineViewModel: WineViewModel
+    private lateinit var userViewModel: CreateUserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        vinoListAdapter = VinoListAdapter{ x -> onItemClick(x) }
-        viewModel = ViewModelProvider(requireActivity()).get(WineViewModel::class.java)
 
-        val parentJob = Job()
+        vinoListAdapter = VinoListAdapter { x,y -> onItemsClick(x,y) }
+
+        wineViewModel = ViewModelProvider(requireActivity()).get(WineViewModel::class.java)
+        userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
+
+/*        val parentJob = Job()
         val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
         scope.launch {
             //viewModel.cargarDatos()
-            viewModel.getListWines()
-        }
+            wineViewModel.getListWines()
+        }*/
     }
 
     override fun onCreateView(
@@ -60,15 +65,29 @@ class ListFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(context)
         recVinos.layoutManager = linearLayoutManager
 
-        viewModel.vinosLiveData.observe(viewLifecycleOwner, Observer { result ->
+        wineViewModel.vinosLiveData.observe(viewLifecycleOwner, Observer { result ->
             vinoListAdapter.setData(result)
             recVinos.adapter = vinoListAdapter
-            //vinoListAdapter.filter("m")
+
         })
 
     }
 
-    private fun onItemClick (position:Int ) : Boolean {
+    private fun onItemsClick(position: Int,item: String): Boolean{
+        if (item == "cardView" ){
+            cardView(position)
+        } else if (item == "fav"){
+            itemFav(position)
+        }
+        return true
+    }
+
+    private fun itemFav (position: Int): Boolean {
+        Snackbar.make(v, position.toString() + "agregar a Favoritos", Snackbar.LENGTH_SHORT).show()
+        return true
+    }
+
+    private fun cardView (position:Int ) : Boolean {
 
         var action: NavDirections  = ListFragmentDirections.actionListFragmentToDetailsFragment(position)
 
@@ -103,6 +122,18 @@ class ListFragment : Fragment() {
                 }
             })
         }
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var id = item.itemId
+
+        if(id == R.id.item_options_user){
+
+            var action = ListFragmentDirections.actionListFragmentToOptionsUserFragment()
+            v.findNavController().navigate(action)
+
+        }
+
+        return true
     }
 }

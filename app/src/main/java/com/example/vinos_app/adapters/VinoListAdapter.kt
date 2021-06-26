@@ -3,15 +3,17 @@ package com.example.vinos_app.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.entities.Vino
+import com.google.android.material.snackbar.Snackbar
 import kotlin.properties.Delegates
 
 class VinoListAdapter(
-    val onItemClick: (Int) -> Boolean
+        val onItemClick: (Int,String) -> Boolean
     ): RecyclerView.Adapter<VinoListAdapter.VinoHolder>() {
     var vinosList: List<Vino> by Delegates.observable(emptyList()){ _, _, _ -> notifyDataSetChanged() }
     lateinit var vinosListBackup:MutableList<Vino>
@@ -48,7 +50,11 @@ class VinoListAdapter(
 
         holder.getCardLayout().setOnClickListener() {
             //onItemClick(vinosList[position].nombreVino)
-            onItemClick(position)
+            onItemClick(position,"cardView")
+        }
+
+        holder.getButtonFav().setOnClickListener(){
+            onItemClick(position,"fav")
         }
 
     }
@@ -88,6 +94,12 @@ class VinoListAdapter(
             return view.findViewById(R.id.cardView)
         }
 
+        fun getButtonFav (): ImageView {
+            return view.findViewById(R.id.imageFav)
+        }
+
+
     }
 
 }
+
