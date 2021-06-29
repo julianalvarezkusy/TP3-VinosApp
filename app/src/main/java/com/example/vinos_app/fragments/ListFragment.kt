@@ -69,7 +69,7 @@ class ListFragment : Fragment() {
         //Cargo la lista inicial
         wineViewModel.getListWines()
         wineViewModel.vinosLiveData.observe(viewLifecycleOwner, Observer { result ->
-            Log.d("ListFragment", "Error" + result.toString())
+
             vinoListAdapter.setData(result)
             recVinos.adapter = vinoListAdapter
 

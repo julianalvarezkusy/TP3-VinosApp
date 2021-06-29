@@ -1,7 +1,9 @@
 package com.example.vinos_app.fragments
 
 import WineViewModel
+import android.bluetooth.BluetoothClass
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.adapters.VinoListAdapter
+import com.example.vinos_app.entities.User
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
+import java.lang.Exception
 
 class FavouritesListFragment : Fragment() {
 
@@ -27,6 +32,8 @@ class FavouritesListFragment : Fragment() {
 
     private lateinit var wineViewModel: WineViewModel
     private lateinit var userViewModel: CreateUserViewModel
+
+    private lateinit var user : User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +67,31 @@ class FavouritesListFragment : Fragment() {
         recVinos.layoutManager = linearLayoutManager
 
         //Acá tengo que traer los vinos del user
+        //obtengo el user
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+
+
+            scope.launch {
+                val getAppUser = async { userViewModel.getAppUserConected() }
+                user = getAppUser.await()!!
+                Log.d("USER", "User: "+user.toString())
+                if (user != null) {
+
+                    withContext(Dispatchers.Main){
+                        vinoListAdapter.setData(user.userWineList)
+                        recVinos.adapter = vinoListAdapter
+                    }
+
+
+
+                }
+
+            }
+
+
+
+
 
     }
 
