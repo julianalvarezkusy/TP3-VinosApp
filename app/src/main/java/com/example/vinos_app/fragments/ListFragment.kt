@@ -2,6 +2,7 @@ package com.example.vinos_app.fragments
 
 import WineViewModel
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -65,7 +66,10 @@ class ListFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(context)
         recVinos.layoutManager = linearLayoutManager
 
+        //Cargo la lista inicial
+        wineViewModel.getListWines()
         wineViewModel.vinosLiveData.observe(viewLifecycleOwner, Observer { result ->
+            Log.d("ListFragment", "Error" + result.toString())
             vinoListAdapter.setData(result)
             recVinos.adapter = vinoListAdapter
 
