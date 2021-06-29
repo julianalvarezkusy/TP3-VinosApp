@@ -79,6 +79,33 @@ class CreateUserViewModel : ViewModel(){
 
     }
 
+    suspend fun getAppUserConected() : User?{
+        try{
+
+            val user = getUserConected()
+            if(user != null){
+                val userRef = db.collection(userColection).whereEqualTo("email", user.email.toString())
+                    .get().await()
+                val userList = userRef.documents
+                if (userList.size == 1){
+
+                    return userList[0].toObject(User::class.java)
+                }else{
+                    return null
+                }
+                Log.d("FirebaseUserSource", "User found")
+
+            }else{
+                return null
+            }
+
+        }catch (e: Exception){
+
+            Log.e("User not found", "Exception thrown: ${e.message}")
+            return null
+        }
+    }
+
     suspend fun getUserByEmail(email: String) : User? {
 
         try{
@@ -89,7 +116,7 @@ class CreateUserViewModel : ViewModel(){
             val userList = userRef.documents
 
             if (userList.size == 1){
-                Log.d("INSIDE",userList.toString())
+
                 return userList[0].toObject(User::class.java)
             }else{
                 return null
