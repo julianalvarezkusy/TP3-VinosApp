@@ -32,7 +32,7 @@ class ListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        vinoListAdapter = VinoListAdapter { x,y -> onItemsClick(x,y) }
+
 
         wineViewModel = ViewModelProvider(requireActivity()).get(WineViewModel::class.java)
         userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
@@ -64,19 +64,21 @@ class ListFragment : Fragment() {
         recVinos.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context)
         recVinos.layoutManager = linearLayoutManager
+        vinoListAdapter = VinoListAdapter { x,y -> onItemsClick(x,y) }
 
         wineViewModel.vinosLiveData.observe(viewLifecycleOwner, Observer { result ->
             vinoListAdapter.setData(result)
             recVinos.adapter = vinoListAdapter
-
         })
 
     }
 
     private fun onItemsClick(position: Int,item: String): Boolean{
+
         if (item == "cardView" ){
             cardView(position)
-        } else if (item == "fav"){
+        }
+        else if (item == "fav"){
             itemFav(position)
         }
         return true
