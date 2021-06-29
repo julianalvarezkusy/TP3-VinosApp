@@ -1,6 +1,7 @@
 package com.example.vinos_app.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import com.example.vinos_app.R
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
+import java.lang.Exception
 
 
 class OptionsUserFragment : Fragment() {
@@ -26,10 +29,16 @@ class OptionsUserFragment : Fragment() {
     lateinit var userName: TextView
 
     lateinit var buttonLogout: Button
+    lateinit var buttonFavourites : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
     }
 
@@ -45,15 +54,53 @@ class OptionsUserFragment : Fragment() {
 
         buttonLogout = v.findViewById(R.id.buttonLogout)
 
+        buttonFavourites = v.findViewById(R.id.buttonFavourites)
+
+
 
         return v
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //Obtengo datos del User
+        /*
+        try {
+            val parentJob = Job()
+            val scope = CoroutineScope(Dispatchers.Default + parentJob)
+
+
+            scope.launch {
+                val getUser = async {
+                    userViewModel.getAppUserConected()
+                }
+                val user = getUser.await()
+                if (user != null) {
+                    userEmail.text = user.email
+                    userName.text = user.name
+                } else {
+                    userEmail.text = "User not found"
+                    userName.text = "User not Found"
+                }
+
+
+            }
+
+        }catch (e: Exception){
+            Log.d("Error", "Error: "+e.message)
+        }
+
+         */
+
     }
 
     override fun onStart() {
         super.onStart()
 
-        userEmail
-        userName
+
+
+
+
 
         buttonLogout.setOnClickListener {
             Firebase.auth.signOut()
@@ -61,6 +108,13 @@ class OptionsUserFragment : Fragment() {
             val action = OptionsUserFragmentDirections.actionOptionsUserFragmentToLoginActivity()
             v.findNavController().navigate(action)
         }
+
+        buttonFavourites.setOnClickListener{
+            val action = OptionsUserFragmentDirections.actionOptionsUserFragmentToFavouritesListFragment()
+            v.findNavController().navigate(action)
+        }
+
+
     }
 
 

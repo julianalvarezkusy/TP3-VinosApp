@@ -1,5 +1,6 @@
 package com.example.vinos_app.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,22 +25,31 @@ class VinoListAdapter(
     }
 
     fun setData(data: List<Vino>){
+        Log.d("Data","Data: "+data.toString())
         this.vinosList = data
         this.vinosListBackup = data as MutableList<Vino>
     }
 
     fun filter(text: String) {
-        var filteredList = mutableListOf<Vino>()
-        if(text.isEmpty()) {
-            filteredList = vinosListBackup
-        } else {
-            vinosListBackup.forEach {
-                var vino = it.nombre.toLowerCase() + it.bodega.toLowerCase()
-                if(vino.contains(text.toLowerCase()))
-                    filteredList.add(it)
+
+        try{
+            var filteredList = mutableListOf<Vino>()
+            if(text.isEmpty()) {
+                filteredList = vinosListBackup
+            } else {
+                vinosListBackup.forEach {
+                    var vino = it.nombre.toLowerCase() + it.bodega.toLowerCase()
+                    if(vino.contains(text.toLowerCase()))
+                        filteredList.add(it)
+                }
             }
+            vinosList = filteredList
+        }catch (e: Exception){
+
+            Log.d("TAG","Error: "+ e.message)
+            Log.d("Error", "VinosListAdapter: "+vinosListBackup.toString())
         }
-        vinosList = filteredList
+
     }
 
     override fun onBindViewHolder(holder: VinoHolder, position: Int) {
@@ -95,7 +105,7 @@ class VinoListAdapter(
         }
 
         fun getButtonFav (): ImageView {
-            return view.findViewById(R.id.imageFav)
+            return view.findViewById(R.id.wineImage)
         }
 
 

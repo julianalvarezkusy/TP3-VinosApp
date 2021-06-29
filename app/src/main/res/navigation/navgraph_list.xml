@@ -41,10 +41,18 @@
         <action
             android:id="@+id/action_optionsUserFragment_to_loginActivity"
             app:destination="@id/loginActivity" />
+        <action
+            android:id="@+id/action_optionsUserFragment_to_favouritesListFragment"
+            app:destination="@id/favouritesListFragment" />
     </fragment>
     <activity
         android:id="@+id/loginActivity"
         android:name="com.example.vinos_app.activities.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/favouritesListFragment"
+        android:name="com.example.vinos_app.fragments.FavouritesListFragment"
+        android:label="fragment_favourites_list"
+        tools:layout="@layout/fragment_favourites_list" />
 </navigation>

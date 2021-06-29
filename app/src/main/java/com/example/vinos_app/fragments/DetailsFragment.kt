@@ -121,7 +121,7 @@ class DetailsFragment : Fragment() {
         val action = DetailsFragmentDirections.actionDetailsFragmentToListFragment()
 
         v.findNavController().navigate(action)
-        
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

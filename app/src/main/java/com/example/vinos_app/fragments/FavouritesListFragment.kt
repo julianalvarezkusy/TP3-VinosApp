@@ -1,12 +1,13 @@
 package com.example.vinos_app.fragments
 
 import WineViewModel
+import android.bluetooth.BluetoothClass
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
@@ -14,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.adapters.VinoListAdapter
+import com.example.vinos_app.entities.User
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import java.lang.Exception
 
-class ListFragment : Fragment() {
+class FavouritesListFragment : Fragment() {
+
 
     lateinit var v: View
 
@@ -29,60 +33,72 @@ class ListFragment : Fragment() {
     private lateinit var wineViewModel: WineViewModel
     private lateinit var userViewModel: CreateUserViewModel
 
+    private lateinit var user : User
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setHasOptionsMenu(true)
 
-
+        vinoListAdapter = VinoListAdapter { x,y -> onItemsClick(x,y) }
 
         wineViewModel = ViewModelProvider(requireActivity()).get(WineViewModel::class.java)
         userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
 
-/*        val parentJob = Job()
-        val scope = CoroutineScope(Dispatchers.Default + parentJob)
-
-        scope.launch {
-            //viewModel.cargarDatos()
-            wineViewModel.getListWines()
-        }*/
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_list, container, false)
+        v = inflater.inflate(R.layout.fragment_favourites_list, container, false)
         setHasOptionsMenu(true)
-        recVinos = v.findViewById(R.id.recViewList)
-
+        recVinos = v.findViewById(R.id.favouriteRecView)
         return v
     }
 
     override fun onStart() {
         super.onStart()
-
         recVinos.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context)
         recVinos.layoutManager = linearLayoutManager
-        vinoListAdapter = VinoListAdapter { x,y -> onItemsClick(x,y) }
 
-        //Cargo la lista inicial
-        wineViewModel.getListWines()
-        wineViewModel.vinosLiveData.observe(viewLifecycleOwner, Observer { result ->
+        //Acá tengo que traer los vinos del user
+        //obtengo el user
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
-            vinoListAdapter.setData(result)
-            recVinos.adapter = vinoListAdapter
-        })
+
+            scope.launch {
+                val getAppUser = async { userViewModel.getAppUserConected() }
+                user = getAppUser.await()!!
+                Log.d("USER", "User: "+user.toString())
+                if (user != null) {
+
+                    withContext(Dispatchers.Main){
+                        vinoListAdapter.setData(user.userWineList)
+                        recVinos.adapter = vinoListAdapter
+                    }
+
+
+
+                }
+
+            }
+
+
+
+
 
     }
 
-    private fun onItemsClick(position: Int,item: String): Boolean{
-
+    private fun onItemsClick(position: Int, item: String): Boolean {
         if (item == "cardView" ){
             cardView(position)
-        }
-        else if (item == "fav"){
+        } else if (item == "fav"){
             itemFav(position)
         }
         return true
@@ -95,7 +111,7 @@ class ListFragment : Fragment() {
 
     private fun cardView (position:Int ) : Boolean {
 
-        var action: NavDirections  = ListFragmentDirections.actionListFragmentToDetailsFragment(position)
+        var action: NavDirections = ListFragmentDirections.actionListFragmentToDetailsFragment(position)
 
         var navController = v.findNavController()
         if (navController.currentDestination?.id == R.id.listFragment) {
@@ -108,38 +124,4 @@ class ListFragment : Fragment() {
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.list_wine_toolbar, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-
-        val searchItem = menu.findItem(R.id.app_bar_search)
-        if (searchItem!= null){
-            val searchView = searchItem.actionView as SearchView
-            searchView.maxWidth = Integer.MAX_VALUE
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    vinoListAdapter.filter(query)
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String): Boolean {
-                    vinoListAdapter.filter(newText)
-                    return false
-                }
-            })
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        var id = item.itemId
-
-        if(id == R.id.item_options_user){
-
-            var action = ListFragmentDirections.actionListFragmentToOptionsUserFragment()
-            v.findNavController().navigate(action)
-
-        }
-
-        return true
-    }
 }
