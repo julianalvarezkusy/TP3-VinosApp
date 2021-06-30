@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.vinos_app.R
+import com.example.vinos_app.entities.Vino
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
@@ -35,6 +37,8 @@ class DetailsFragment : Fragment() {
 
     private lateinit var viewModel: WineViewModel
     private lateinit var userViewModel : CreateUserViewModel
+
+    lateinit var wineObj: Vino
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +75,7 @@ class DetailsFragment : Fragment() {
         var args = DetailsFragmentArgs.fromBundle(requireArguments())
 
         //var wineObj = viewModel.buscarVino(datoNavigation.wineName)
-        var wineObj = viewModel.vinosLiveData.value!![args.wineName]
+        wineObj = viewModel.vinosLiveData.value!![args.wineName]
 
         if(wineObj != null){
             Log.d("Vino encontrado",wineObj.toString())
@@ -132,26 +136,51 @@ class DetailsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.details_wine_toolbar, menu)
         super.onCreateOptionsMenu(menu, inflater)
+
+
     }
-
-
-
-
-
-
-
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        val id = when(item.itemId) {
+        var id = item.itemId
 
-            R.id.app_bar_switch -> Snackbar.make(v, "bar_switch", Snackbar.LENGTH_SHORT).show()
+        if(id == R.id.app_bar_switch){
+            val parentJob = Job()
+            val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
-            else -> ""
+            scope.launch{
+                try {
+                    val userConected = userViewModel.getUserConected()
+                    if (userConected != null) {
+                        val getUserbyEmail = async { userConected.email?.let { it1 -> userViewModel.getUserByEmail(it1) } }
+                        val user = getUserbyEmail.await()
+                        if (user != null) {
+                            if(viewModel.addWine(user, wineObj)){
+                                Snackbar.make(v, "Vino agregado correctamente", Snackbar.LENGTH_SHORT)
+                                        .show()
+                            }else{
+                                Snackbar.make(v, "Vino eliminado correctamente", Snackbar.LENGTH_SHORT)
+                                        .show()
+                            }
+
+
+                        } else {
+                            Log.d("Error", "No se encontró el usuario")
+                        }
+                    }
+
+
+                } catch (e: Exception) {
+                    Log.d("", "ERROR: " + e.message)
+                }
+            }
+
+
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
+
+
 
 
 

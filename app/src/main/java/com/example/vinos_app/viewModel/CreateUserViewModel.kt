@@ -139,6 +139,24 @@ class CreateUserViewModel : ViewModel(){
         }
     }
 
+    fun updatePassword(newPassword : String){
+            Log.d("", "NewPass: " + newPassword)
+            var firebaseUser = getUserConected()
+
+        if(firebaseUser != null){
+            firebaseUser.updatePassword(newPassword)
+                .addOnSuccessListener { Log.d("","Password Updated") }
+                .addOnFailureListener{Log.d("","Error")}
+        }else{
+            Log.d("", "User not found")
+        }
+
+
+
+
+
+    }
+
 
 
 }

@@ -89,7 +89,26 @@ class ListFragment : Fragment() {
     }
 
     private fun itemFav (position: Int): Boolean {
-        Snackbar.make(v, position.toString() + "agregar a Favoritos", Snackbar.LENGTH_SHORT).show()
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+
+        scope.launch {
+            val getAppUserConnected = async{userViewModel.getAppUserConected()}
+            val user = getAppUserConnected.await()
+
+            val wine = wineViewModel.vinosLiveData.value!![position]
+            if (user != null) {
+                if(wineViewModel.addWine(user, wine)){
+                    Snackbar.make(v, "Vino agregado correctamente", Snackbar.LENGTH_SHORT)
+                            .show()
+                }else{
+                    Snackbar.make(v, "Vino eliminado correctamente", Snackbar.LENGTH_SHORT)
+                            .show()
+                }
+            }
+        }
+
+
         return true
     }
 

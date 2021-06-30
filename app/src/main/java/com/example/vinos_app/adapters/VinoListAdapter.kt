@@ -105,7 +105,7 @@ class VinoListAdapter(
         }
 
         fun getButtonFav (): ImageView {
-            return view.findViewById(R.id.wineImage)
+            return view.findViewById(R.id.itemFav)
         }
 
 

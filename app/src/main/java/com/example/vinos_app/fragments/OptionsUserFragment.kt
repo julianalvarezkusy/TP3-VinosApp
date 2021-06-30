@@ -31,6 +31,8 @@ class OptionsUserFragment : Fragment() {
     lateinit var buttonLogout: Button
     lateinit var buttonFavourites : Button
 
+    lateinit var buttonChangePassword: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
@@ -55,6 +57,10 @@ class OptionsUserFragment : Fragment() {
         buttonLogout = v.findViewById(R.id.buttonLogout)
 
         buttonFavourites = v.findViewById(R.id.buttonFavourites)
+
+        buttonChangePassword = v.findViewById(R.id.buttonChangePassword)
+
+
 
 
 
@@ -114,6 +120,11 @@ class OptionsUserFragment : Fragment() {
 
         buttonFavourites.setOnClickListener{
             val action = OptionsUserFragmentDirections.actionOptionsUserFragmentToFavouritesListFragment()
+            v.findNavController().navigate(action)
+        }
+
+        buttonChangePassword.setOnClickListener{
+            val action = OptionsUserFragmentDirections.actionOptionsUserFragmentToChangePasswordFragment()
             v.findNavController().navigate(action)
         }
 

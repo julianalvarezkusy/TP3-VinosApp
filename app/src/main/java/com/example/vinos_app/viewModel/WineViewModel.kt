@@ -3,18 +3,24 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.vinos_app.entities.User
 import com.example.vinos_app.entities.Vino
+import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.common.collect.Collections2.filter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlin.collections.ArrayList as ArrayList
 
 
 class WineViewModel : ViewModel() {
     var vinos : MutableList<Vino> = mutableListOf()
     var vinosLiveData : MutableLiveData<MutableList<Vino>> = MutableLiveData()
+
 
     val db = Firebase.firestore
 
@@ -37,12 +43,10 @@ class WineViewModel : ViewModel() {
 
     }
 
-    fun addWine(wine:Vino){
+    fun addWine(position: Int){
 
-        db.collection("vinos").document(wine.nombre)
-            .set(wine)
-            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
+
     }
 
     fun addWine (user: User, wine: Vino): Boolean{

@@ -1,10 +1,10 @@
 package com.example.vinos_app.entities
 
 class User(
-        val name: String? = "",
-        val email: String? = "",
-        val password: String? = "",
-        val userWineList: MutableList<Vino>) {
+    val name: String? = "",
+    val email: String? = "",
+    var password: String? = "",
+    val userWineList: MutableList<Vino>) {
 
         constructor() : this("", "", "", ArrayList())
 

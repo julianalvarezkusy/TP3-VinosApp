@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_optionsUserFragment_to_favouritesListFragment"
             app:destination="@id/favouritesListFragment" />
+        <action
+            android:id="@+id/action_optionsUserFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
     <activity
         android:id="@+id/loginActivity"
@@ -55,4 +58,9 @@
         android:name="com.example.vinos_app.fragments.FavouritesListFragment"
         android:label="fragment_favourites_list"
         tools:layout="@layout/fragment_favourites_list" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.vinos_app.fragments.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" />
 </navigation>
