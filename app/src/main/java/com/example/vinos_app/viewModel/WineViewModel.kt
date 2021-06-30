@@ -45,29 +45,53 @@ class WineViewModel : ViewModel() {
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun addWine (user: User, wine: Vino){
-        user.userWineList.add(wine)
+    fun addWine (user: User, wine: Vino): Boolean{
+        var wineAdded = false
+        if(!searchDuplicate(user, wine)){
+            Log.d("Lista", user.userWineList.toString())
+            user.userWineList.add(wine)
+            wineAdded= true
+            }
+
         user.email?.let {
             db.collection("users").document(it)
-                .set(user)
-                .addOnSuccessListener {
-                    Log.d(TAG, "DocumentSnapshot successfully written!")
+                    .set(user)
+                    .addOnSuccessListener {
+                        Log.d(TAG, "DocumentSnapshot successfully written!")
 
-                }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+                    }
+                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
         }
+        return wineAdded
     }
 
-   fun getListWines(){
+
+    private fun searchDuplicate(user: User, wine: Vino): Boolean {
+        var userFound : Boolean = false
+        var i = 0
+        while(i < user.userWineList.size && userFound == false) {
+
+            if (user.userWineList[i].nombre == wine.nombre) {
+
+                userFound = user.userWineList.remove(user.userWineList[i])
+                Log.d("Lista", user.userWineList.toString())
+
+            }
+            i++
+        }
+        return userFound
+    }
+
+    fun getListWines(){
 
         db.collection("vinos")
             //.whereEqualTo("nombreVino", nombre)
             .get()
             .addOnSuccessListener {documents ->
                 if (documents != null) {
-                    Log.d(TAG,"Busqueda de vinos")
+
                     for (document in documents) {
-                        Log.d(TAG, "${document.id} => ${document.data}")
+
                         vinos.add(document.toObject<Vino>())
                         vinosLiveData.value = vinos
                     }
@@ -80,6 +104,8 @@ class WineViewModel : ViewModel() {
     fun buscarVino(name:String): Vino? {
         return this.vinos.find { v -> v.nombre == name}
     }
+
+
 
     fun filtroVinos(busquedaString: String) {
         this.vinos.filter { vino:Vino -> "${vino.nombre} => ${vino.bodega}".contains(busquedaString,true) }

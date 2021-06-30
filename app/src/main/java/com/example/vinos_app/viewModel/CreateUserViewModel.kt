@@ -22,8 +22,8 @@ class CreateUserViewModel : ViewModel(){
     private var auth: FirebaseAuth = Firebase.auth
 
 
-    fun addUser(nombre : String, email: String, password: String) {
-
+    fun addUser(nombre : String, email: String, password: String): Boolean {
+        var userCreated: Boolean = false
         var userWineList: MutableList<Vino> = mutableListOf()
 
         var miUser = User(nombre, email, password, userWineList)
@@ -39,12 +39,15 @@ class CreateUserViewModel : ViewModel(){
                         .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 }
+                userCreated = true
             }
             .addOnFailureListener{
                 // If sign in fails, display a message to the user.
                 e -> Log.w(TAG, "createUserWithEmail:failure", e )
+                userCreated = false
                 //Toast.makeText(, "Authentication failed.",Toast.LENGTH_SHORT).show()}
             }
+        return userCreated
     }
 
     fun addUser(user: User){
@@ -135,5 +138,7 @@ class CreateUserViewModel : ViewModel(){
             return null
         }
     }
+
+
 
 }

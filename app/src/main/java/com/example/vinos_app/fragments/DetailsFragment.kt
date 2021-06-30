@@ -83,22 +83,27 @@ class DetailsFragment : Fragment() {
         wineRating.text = "Rating: " + wineObj.rating
 
 
-        wineFavourite.setOnClickListener()
-        {
+        wineFavourite.setOnClickListener(){
 
             val parentJob = Job()
             val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
-            scope.launch {
+            scope.launch{
                 try {
                     val userConected = userViewModel.getUserConected()
                     if (userConected != null) {
                         val getUserbyEmail = async { userConected.email?.let { it1 -> userViewModel.getUserByEmail(it1) } }
                         val user = getUserbyEmail.await()
                         if (user != null) {
-                            viewModel.addWine(user, wineObj)
-                            Snackbar.make(v, "Vino agregado correctamente", Snackbar.LENGTH_SHORT)
-                                    .show()
+                            if(viewModel.addWine(user, wineObj)){
+                                Snackbar.make(v, "Vino agregado correctamente", Snackbar.LENGTH_SHORT)
+                                        .show()
+                            }else{
+                                Snackbar.make(v, "Vino eliminado correctamente", Snackbar.LENGTH_SHORT)
+                                        .show()
+                            }
+
+
                         } else {
                             Log.d("Error", "No se encontró el usuario")
                         }

@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import com.example.vinos_app.R
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 
 
 class CreateUserFragment : Fragment() {
@@ -47,14 +48,31 @@ class CreateUserFragment : Fragment() {
         createUserViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
         buttonCreateUser.setOnClickListener(){
 
-            createUserViewModel.addUser(userName.text.toString(), userEmail.text.toString(), userPassword.text.toString())
+            val parentJob = Job()
+            val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
-            val action = CreateUserFragmentDirections.actionCreateUserFragmentToFragmentLogin()
+            scope.launch {
+                val createUser = async{createUserViewModel.addUser(userName.text.toString(), userEmail.text.toString(), userPassword.text.toString())}
+                val userCreated = createUser.await()
 
-            v.findNavController().navigate(action)
 
-            Snackbar.make(v, "Usuario: " + userEmail.text + " "+ userName.text + " Password: "+userPassword.text, Snackbar.LENGTH_SHORT)
-                .show()
+                val action = CreateUserFragmentDirections.actionCreateUserFragmentToFragmentLogin()
+
+                v.findNavController().navigate(action)
+                Log.d("USER", "USER CREATED: " + userCreated)
+                if(userCreated){
+                    Snackbar.make(v, "Usuario creado con éxito", Snackbar.LENGTH_SHORT)
+                            .show()
+                }else{
+                    Snackbar.make(v, "Error en la creación del usuario", Snackbar.LENGTH_SHORT)
+                            .show()
+                }
+            }
+            //val userCreated = createUserViewModel.addUser(userName.text.toString(), userEmail.text.toString(), userPassword.text.toString())
+
+
+
+
         }
     }
 }

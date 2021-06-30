@@ -38,13 +38,13 @@ class ListFragment : Fragment() {
         wineViewModel = ViewModelProvider(requireActivity()).get(WineViewModel::class.java)
         userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
 
-/*        val parentJob = Job()
+        val parentJob = Job()
         val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
         scope.launch {
             //viewModel.cargarDatos()
             wineViewModel.getListWines()
-        }*/
+        }
     }
 
     override fun onCreateView(
@@ -68,7 +68,7 @@ class ListFragment : Fragment() {
         vinoListAdapter = VinoListAdapter { x,y -> onItemsClick(x,y) }
 
         //Cargo la lista inicial
-        wineViewModel.getListWines()
+
         wineViewModel.vinosLiveData.observe(viewLifecycleOwner, Observer { result ->
 
             vinoListAdapter.setData(result)

@@ -33,13 +33,13 @@ class OptionsUserFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
 
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        userViewModel = ViewModelProvider(requireActivity()).get(CreateUserViewModel::class.java)
+
     }
 
     override fun onCreateView(
@@ -64,7 +64,7 @@ class OptionsUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //Obtengo datos del User
-        /*
+
         try {
             val parentJob = Job()
             val scope = CoroutineScope(Dispatchers.Default + parentJob)
@@ -75,13 +75,16 @@ class OptionsUserFragment : Fragment() {
                     userViewModel.getAppUserConected()
                 }
                 val user = getUser.await()
-                if (user != null) {
-                    userEmail.text = user.email
-                    userName.text = user.name
-                } else {
-                    userEmail.text = "User not found"
-                    userName.text = "User not Found"
+                withContext(Dispatchers.Main){
+                    if (user != null) {
+                        userEmail.text = "Mail:" + user.email
+                        userName.text = "Nombre:" + user.name
+                    } else {
+                        userEmail.text = "User not found"
+                        userName.text = "User not Found"
+                    }
                 }
+
 
 
             }
@@ -90,7 +93,7 @@ class OptionsUserFragment : Fragment() {
             Log.d("Error", "Error: "+e.message)
         }
 
-         */
+
 
     }
 

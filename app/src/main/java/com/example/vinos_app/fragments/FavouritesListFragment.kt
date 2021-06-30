@@ -79,6 +79,7 @@ class FavouritesListFragment : Fragment() {
                 if (user != null) {
 
                     withContext(Dispatchers.Main){
+                        Log.d("Antes del setdata", user.userWineList.toString())
                         vinoListAdapter.setData(user.userWineList)
                         recVinos.adapter = vinoListAdapter
                     }
