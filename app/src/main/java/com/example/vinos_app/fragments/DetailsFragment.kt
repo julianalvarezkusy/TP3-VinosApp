@@ -78,8 +78,8 @@ class DetailsFragment : Fragment() {
         wineObj = viewModel.vinosLiveData.value!![args.wineName]
 
         if(wineObj != null){
-            Log.d("Vino encontrado",wineObj.toString())
-            Log.d("ID VINO", args.wineName.toString())
+            //Log.d("Vino encontrado",wineObj.toString())
+            //Log.d("ID VINO", args.wineName.toString())
         }
 
         wineName.text = "Nombre: " + wineObj.nombre

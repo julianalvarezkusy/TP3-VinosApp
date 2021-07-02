@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -96,8 +97,8 @@ class VinoListAdapter(
         }
 
         fun setRating (name: String){
-            val txt : TextView = view.findViewById(R.id.wineRating)
-            txt.text = name + "/5.0"
+            val stars : RatingBar = view.findViewById(R.id.ratingBarCard)
+            stars.setRating(name.toFloat())
         }
 
         fun getCardLayout (): CardView {

@@ -4,6 +4,7 @@ import WineViewModel
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.adapters.VinoListAdapter
 import com.example.vinos_app.viewModel.CreateUserViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 
@@ -25,6 +27,7 @@ class ListFragment : Fragment() {
     lateinit var recVinos: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var vinoListAdapter: VinoListAdapter
+    private lateinit var addWineButton: FloatingActionButton
 
     private lateinit var wineViewModel: WineViewModel
     private lateinit var userViewModel: CreateUserViewModel
@@ -62,6 +65,8 @@ class ListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        addWineButton = v.findViewById(R.id.addWineButton)
+
         recVinos.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(context)
         recVinos.layoutManager = linearLayoutManager
@@ -74,6 +79,13 @@ class ListFragment : Fragment() {
             vinoListAdapter.setData(result)
             recVinos.adapter = vinoListAdapter
         })
+
+        addWineButton.setOnClickListener{
+            Snackbar.make(v, "Agregar vino", Snackbar.LENGTH_SHORT)
+                    .show()
+            val action = ListFragmentDirections.actionListFragmentToAddWineFragment()
+            v.findNavController().navigate(action)
+        }
 
     }
 

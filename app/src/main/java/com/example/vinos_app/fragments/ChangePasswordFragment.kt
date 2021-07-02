@@ -41,7 +41,7 @@ class ChangePasswordFragment : Fragment() {
         super.onStart()
 
         updatePaswordButton.setOnClickListener(){
-            Log.d("password","Password: "+passwordField.toString())
+
             userViewModel.updatePassword(passwordField.text.toString())
 
         }

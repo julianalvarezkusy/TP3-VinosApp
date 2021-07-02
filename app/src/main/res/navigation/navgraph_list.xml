@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_listFragment_to_optionsUserFragment"
             app:destination="@id/optionsUserFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_addWineFragment"
+            app:destination="@id/addWineFragment" />
     </fragment>
     <fragment
         android:id="@+id/DetailsFragment"
@@ -63,4 +66,13 @@
         android:name="com.example.vinos_app.fragments.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/addWineFragment"
+        android:name="com.example.vinos_app.fragments.AddWineFragment"
+        android:label="fragment_add_wine"
+        tools:layout="@layout/fragment_add_wine" >
+        <action
+            android:id="@+id/action_addWineFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
 </navigation>

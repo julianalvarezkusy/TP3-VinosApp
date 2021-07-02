@@ -116,6 +116,17 @@ class WineViewModel : ViewModel() {
         vinosLiveData.value = vinos
     }
 
+    fun uploadWine(vino: Vino): Boolean{
+        var vinoGuardado = false
+        db.collection("vinos").document().set(vino)
+            .addOnSuccessListener {
+                vinoGuardado = true
+                Log.d("vinos", "Vino Guardado")
+            }
+            .addOnFailureListener{ Log.d("vinos", "Error al cargar vino")}
+        return vinoGuardado
+    }
+
 }
 
 
