@@ -1,4 +1,5 @@
 import android.content.ContentValues.TAG
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -11,9 +12,11 @@ import com.google.common.collect.Collections2.filter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import java.io.File
 import kotlin.collections.ArrayList as ArrayList
 
 
@@ -23,6 +26,7 @@ class WineViewModel : ViewModel() {
 
 
     val db = Firebase.firestore
+    var storageRef = Firebase.storage.reference
 
     fun cargarDatos(){
 
@@ -125,6 +129,22 @@ class WineViewModel : ViewModel() {
             }
             .addOnFailureListener{ Log.d("vinos", "Error al cargar vino")}
         return vinoGuardado
+    }
+
+    fun uploadWineImage(image: File):String{
+        var imageUrl =""
+
+        var file = Uri.fromFile(image)
+        val imageRef = storageRef.child("images/${file.lastPathSegment}")
+        imageRef.putFile(file)
+            .addOnSuccessListener {
+                Log.d(TAG, "Image successfully upload")
+                imageUrl = imageRef.downloadUrl.toString()
+            }
+            .addOnFailureListener {
+                    e:Exception -> Log.w(TAG, "Error upload Image", e)
+            }
+        return imageUrl
     }
 
 }

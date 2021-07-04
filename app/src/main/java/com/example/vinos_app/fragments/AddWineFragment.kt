@@ -17,6 +17,7 @@ import com.example.vinos_app.entities.User
 import com.example.vinos_app.entities.Vino
 import com.example.vinos_app.viewModel.CreateUserViewModel
 import kotlinx.coroutines.*
+import java.io.File
 
 
 class AddWineFragment : Fragment() {
@@ -57,8 +58,15 @@ class AddWineFragment : Fragment() {
         wineViewModel = ViewModelProvider(requireActivity()).get(WineViewModel::class.java)
         saveButton.setOnClickListener{
 
+            var file = File("wine_bottle.jpg")
+            wineViewModel.uploadWineImage(file)
 
-            var vino = Vino(wineName.text.toString(), winePrice.text.toString().toDouble(), wineRating.rating.toDouble(),wineCellar.text.toString())
+            var vino = Vino(
+                    wineName.text.toString()
+                    ,winePrice.text.toString().toDouble()
+                    ,wineRating.rating.toDouble()
+                    ,wineCellar.text.toString()
+            )
 
             var vinoGuardado = wineViewModel.uploadWine(vino)
 
