@@ -1,4 +1,6 @@
 import android.content.ContentValues.TAG
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -11,9 +13,12 @@ import com.google.common.collect.Collections2.filter
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 import kotlin.collections.ArrayList as ArrayList
 
 
@@ -23,25 +28,9 @@ class WineViewModel : ViewModel() {
 
 
     val db = Firebase.firestore
+    val storage = Firebase.storage
 
-    fun cargarDatos(){
 
-/*
-
-        vinos.add(Vino("Estrella 1977", 1500.00, 3.8, "Weinert"))
-        vinos.add(Vino("La Violeta 2012", 2000.00, 4.8, "Monteviejo"))
-        vinos.add(Vino("Nosotros 2010", 1300.00, 3.2, "Susana Balbo"))
-        vinos.add(Vino("Chañares", 2005.00, 4.5, "Mendoza"))
-
-        vinosLD.value = vinos
-        for (vino in vinos) {
-            addWine(vino)
-            Log.d(TAG,vino.nombre)
-        }
-
-*/
-
-    }
 
     fun addWine(position: Int){
 
@@ -118,13 +107,33 @@ class WineViewModel : ViewModel() {
 
     fun uploadWine(vino: Vino): Boolean{
         var vinoGuardado = false
-        db.collection("vinos").document().set(vino)
+        db.collection("vinos").document(vino.nombre).set(vino)
             .addOnSuccessListener {
                 vinoGuardado = true
                 Log.d("vinos", "Vino Guardado")
             }
             .addOnFailureListener{ Log.d("vinos", "Error al cargar vino")}
         return vinoGuardado
+    }
+
+    suspend fun getImage(wineName:String): Bitmap? {
+
+        val bytes:Long = 1024*1024
+        val path = "WineImages/"
+        val jpg = ".jpg"
+        try{
+        val storageRef = storage.reference
+        val storagePath = storageRef.child(path + wineName + jpg)
+
+
+            val byteArray = storagePath.getBytes(bytes).await()
+            val image = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+            return image
+        }catch (e: Exception){
+            Log.d("IMG", "Error:"+e.message)
+            Log.d("IMG", "Error: path:"+path+wineName)
+            return null
+        }
     }
 
 }

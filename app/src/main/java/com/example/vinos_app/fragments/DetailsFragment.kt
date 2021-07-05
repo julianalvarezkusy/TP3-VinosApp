@@ -1,6 +1,7 @@
 package com.example.vinos_app.fragments
 
 import WineViewModel
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -8,10 +9,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.SearchView
-import android.widget.TextView
+import android.widget.*
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.vinos_app.R
@@ -33,7 +33,8 @@ class DetailsFragment : Fragment() {
     lateinit var wineCellar: TextView
     lateinit var wineRating: TextView
     lateinit var wineFavourite: Button
-    lateinit var backArrow : ImageButton
+    lateinit var wineImageDetails: ImageView
+
 
     private lateinit var viewModel: WineViewModel
     private lateinit var userViewModel : CreateUserViewModel
@@ -55,7 +56,7 @@ class DetailsFragment : Fragment() {
         wineCellar = v.findViewById(R.id.wineCellarDetail)
         wineRating = v.findViewById(R.id.wineRatingDetail)
         wineFavourite = v.findViewById(R.id.favoriteButton)
-        backArrow = v.findViewById(R.id.backarrow)
+        wineImageDetails = v.findViewById(R.id.wineImageDetail)
 
         return v
     }
@@ -85,6 +86,24 @@ class DetailsFragment : Fragment() {
         wineName.text = "Nombre: " + wineObj.nombre
         wineCellar.text = "Cellar: " + wineObj.bodega
         wineRating.text = "Rating: " + wineObj.rating
+        //wineImageDetails.setImageResource(R.drawable.wine_bottle)
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Default + parentJob)
+
+        scope.launch {
+            val getImage = async{viewModel.getImage(wineObj.nombre)}
+            val image = getImage.await()
+            if(image != null){
+
+
+                withContext(Dispatchers.Main){
+
+                    wineImageDetails.setImageBitmap(image)
+
+                }
+
+            }
+        }
 
 
         wineFavourite.setOnClickListener(){
@@ -120,18 +139,10 @@ class DetailsFragment : Fragment() {
             }
         }
 
-        backArrow.setOnClickListener(){
-            goBack()
-        }
-    }
-
-    private fun goBack() {
-
-        val action = DetailsFragmentDirections.actionDetailsFragmentToListFragment()
-
-        v.findNavController().navigate(action)
 
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.details_wine_toolbar, menu)

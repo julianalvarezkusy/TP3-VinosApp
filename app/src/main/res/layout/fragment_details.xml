@@ -16,8 +16,9 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/wineCellarDetail"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/cardImageWineDetail" />
 
     <TextView
         android:id="@+id/wineRatingDetail"
@@ -47,27 +48,32 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="158dp"
         android:layout_marginEnd="160dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:text="Favoritos"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/wineRatingDetail" />
 
-    <ImageButton
-        android:id="@+id/backarrow"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardImageWineDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="306dp"
-        android:layout_marginBottom="632dp"
-        android:src="@drawable/backarrow"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="87dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/wineNameDetail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/wineImageDetail"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+
+            android:src="@android:drawable/ic_menu_report_image" />
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

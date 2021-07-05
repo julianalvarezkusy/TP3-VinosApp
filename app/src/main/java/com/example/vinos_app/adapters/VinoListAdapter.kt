@@ -1,5 +1,6 @@
 package com.example.vinos_app.adapters
 
+import WineViewModel
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinos_app.R
 import com.example.vinos_app.entities.Vino
@@ -20,13 +22,15 @@ class VinoListAdapter(
     var vinosList: List<Vino> by Delegates.observable(emptyList()){ _, _, _ -> notifyDataSetChanged() }
     lateinit var vinosListBackup:MutableList<Vino>
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VinoHolder {
+
         val view = LayoutInflater.from(parent.context).inflate(R.layout.wine_list_item, parent,false)
         return (VinoHolder(view))
     }
 
     fun setData(data: List<Vino>){
-        Log.d("Data","Data: "+data.toString())
+        //Log.d("Data","Data: "+data.toString())
         this.vinosList = data
         this.vinosListBackup = data as MutableList<Vino>
     }
@@ -58,6 +62,7 @@ class VinoListAdapter(
         holder.setCellar(vinosList[position].bodega)
         holder.setPrice(vinosList[position].precio.toString())
         holder.setRating(vinosList[position].rating.toString())
+        holder.setImage(vinosList[position].nombre)
 
         holder.getCardLayout().setOnClickListener() {
             //onItemClick(vinosList[position].nombreVino)
@@ -107,6 +112,11 @@ class VinoListAdapter(
 
         fun getButtonFav (): ImageView {
             return view.findViewById(R.id.itemFav)
+        }
+
+        fun setImage(name: String){
+            val wineImage: ImageView = view.findViewById(R.id.wineImage)
+
         }
 
 
