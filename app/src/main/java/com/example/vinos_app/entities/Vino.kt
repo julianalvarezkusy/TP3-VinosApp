@@ -1,18 +1,15 @@
 package com.example.vinos_app.entities
 
-import android.os.Parcel
-import android.os.Parcelable
+import android.graphics.Bitmap
 
 class Vino(var nombre: String, var precio: Double, var rating: Double, var bodega: String) {
 
     constructor() : this("",0.0,0.0,"")
+    var img :Bitmap?
 
-//    init{
-//        this.nombre = nombre!!
-//        this.precio = precio!!
-//        this.rating = rating!!
-//        this.bodega = bodega!!
-//    }
+   init{
+    img = null
+   }
 
 
 }

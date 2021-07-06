@@ -2,7 +2,6 @@ package com.example.vinos_app.fragments
 
 import WineViewModel
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,7 @@ import android.widget.RatingBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.vinos_app.R
-import com.example.vinos_app.entities.User
 import com.example.vinos_app.entities.Vino
-import com.example.vinos_app.viewModel.CreateUserViewModel
-import kotlinx.coroutines.*
 
 
 class AddWineFragment : Fragment() {

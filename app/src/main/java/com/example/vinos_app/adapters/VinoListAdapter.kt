@@ -1,6 +1,7 @@
 package com.example.vinos_app.adapters
 
 import WineViewModel
+import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,9 +19,11 @@ import kotlin.properties.Delegates
 
 class VinoListAdapter(
         val onItemClick: (Int,String) -> Boolean
+
     ): RecyclerView.Adapter<VinoListAdapter.VinoHolder>() {
     var vinosList: List<Vino> by Delegates.observable(emptyList()){ _, _, _ -> notifyDataSetChanged() }
     lateinit var vinosListBackup:MutableList<Vino>
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VinoHolder {
@@ -62,7 +65,10 @@ class VinoListAdapter(
         holder.setCellar(vinosList[position].bodega)
         holder.setPrice(vinosList[position].precio.toString())
         holder.setRating(vinosList[position].rating.toString())
-        holder.setImage(vinosList[position].nombre)
+        vinosList[position].img?.let { holder.setImage(it) }
+
+
+
 
         holder.getCardLayout().setOnClickListener() {
             //onItemClick(vinosList[position].nombreVino)
@@ -114,8 +120,9 @@ class VinoListAdapter(
             return view.findViewById(R.id.itemFav)
         }
 
-        fun setImage(name: String){
-            val wineImage: ImageView = view.findViewById(R.id.wineImage)
+        fun setImage(img : Bitmap){
+           val imagen: ImageView = view.findViewById(R.id.wineImage)
+            imagen.setImageBitmap(img)
 
         }
 

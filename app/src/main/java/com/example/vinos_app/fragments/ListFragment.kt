@@ -100,6 +100,8 @@ class ListFragment : Fragment() {
         return true
     }
 
+
+
     private fun itemFav (position: Int): Boolean {
         val parentJob = Job()
         val scope = CoroutineScope(Dispatchers.Default + parentJob)

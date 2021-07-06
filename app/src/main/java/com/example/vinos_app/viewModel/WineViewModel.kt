@@ -14,9 +14,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 import kotlin.collections.ArrayList as ArrayList
@@ -82,10 +80,21 @@ class WineViewModel : ViewModel() {
             .get()
             .addOnSuccessListener {documents ->
                 if (documents != null) {
-
+                    vinos = mutableListOf()
                     for (document in documents) {
+                        val vino = document.toObject<Vino>()
+                        val parentJob = Job()
+                        val scope = CoroutineScope(Dispatchers.Default + parentJob)
 
-                        vinos.add(document.toObject<Vino>())
+                        scope.launch {
+                            val getImage = async{getImage(vino.nombre)}
+                            val img = getImage.await()
+
+                                vino.img = img
+
+                        }
+
+                        vinos.add(vino)
                         vinosLiveData.value = vinos
                     }
                 }
